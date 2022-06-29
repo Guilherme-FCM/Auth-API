@@ -2,7 +2,12 @@ const User = require('../models/User')
 
 const UserController = {
     async show(request, response){
-        const users = await User.findAll()
+        const config = {
+            attributes: {
+                exclude: ['password']
+            }
+        }
+        const users = await User.findAll(config)
         return response.json(users)
     },
 
