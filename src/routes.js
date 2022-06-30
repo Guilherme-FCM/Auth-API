@@ -6,8 +6,8 @@ const routes = express.Router()
 
 routes.get('/users', UserController.show)
 routes.post('/users', UserController.create)
-routes.put('/users', UserController.update)
-routes.delete('/users', UserController.remove)
+routes.put('/users', authMiddleware, UserController.update)
+routes.delete('/users', authMiddleware, UserController.remove)
 routes.post('/authenticate', UserController.auth)
 
 module.exports = routes

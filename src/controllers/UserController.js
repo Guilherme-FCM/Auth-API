@@ -31,7 +31,13 @@ const UserController = {
 
     async update(){},
 
-    async remove(){},
+    async remove(request, response){
+        const deletedUser = await User.destroy({
+            where: { userName: request.userName }
+        })
+
+        return response.json({ success: deletedUser === 1 })
+    },
 
     async auth(request, response){
         const { userName, password } = request.body
