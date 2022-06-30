@@ -20,24 +20,43 @@ const UserController = {
     async create(request, response){
         let {userName, password, firstName, lastName, email} = request.body
 
-        const user = await User.create({
-            userName, password, firstName, lastName, email 
+        let existsUserName = await User.findOne({
+            where: { userName }
+        })
+        if (existsUserName) return response.json({
+            error: 'User alredy exists.'
         })
 
-        user.password = undefined
-        const token = getToken({ id: user.userName })
-        return response.json({ user, token })
+        try {
+            const user = await User.create({
+                userName, password, firstName, lastName, email 
+            })
+
+            user.password = undefined
+            const token = getToken({ id: user.userName })
+            return response.json({ user, token })
+        } catch (error) {
+            return response.status(400).json({
+                error: `Column ${error.parent.column} is required.`
+            })
+        }
     },
 
     async update(request, response){
-        let {firstName, lastName, email} = request.body
+        let {password, firstName, lastName, email} = request.body
 
-        const updatedUser = await User.update(
-            { firstName, lastName, email }, 
-            { where: { userName: request.userName } }
-        );
+        try {
+            const updatedUser = await User.update(
+                { password, firstName, lastName, email }, 
+                { where: { userName: request.userName } }
+            );
 
-        return response.json({ success: updatedUser == 1 })
+            return response.json({ success: updatedUser == 1 })
+        } catch (error) {
+            return response.status(400).json({
+                error: `Column ${error.parent.column} do not can be null.`
+            })
+        }
     },
 
     async remove(request, response){
@@ -50,15 +69,22 @@ const UserController = {
 
     async auth(request, response){
         const { userName, password } = request.body
+
+        if (! userName || ! password) 
+        return response.status(400).json({
+            error: 'Username and password are required.'
+        })
         
-        const user = await User.findOne({ 
-            where: { userName } 
+        const user = await User.findOne({ where: { userName } })
+
+        if (! user) return response.json({ 
+            error: 'User not found.' 
         })
 
-        if (! user) return response.json({ error: 'User not found.' })
-
         let comparation = await bcrypt.compare(password, user.password)
-        if (! comparation) return response.json({ error: 'Invalid password.' }) 
+        if (! comparation) return response.json({ 
+            error: 'Invalid password.' 
+        }) 
         
         user.password = undefined
         const token = getToken({ id: user.userName })
