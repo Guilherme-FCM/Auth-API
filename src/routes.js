@@ -4,10 +4,12 @@ const authMiddleware = require('./middlewares/auth')
 
 const routes = express.Router()
 
-routes.get('/users', UserController.show)
-routes.post('/users', UserController.create)
-routes.put('/users', authMiddleware, UserController.update)
-routes.delete('/users', authMiddleware, UserController.remove)
+routes.route('/users')
+    .get(UserController.show)
+    .post(UserController.create)
+    .put(authMiddleware, UserController.update)
+    .delete(authMiddleware, UserController.remove)
+
 routes.post('/authenticate', UserController.auth)
 
 module.exports = routes
