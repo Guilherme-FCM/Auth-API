@@ -17,7 +17,7 @@ User.init({
   }, { sequelize }
 )
 
-User.beforeCreate(async (user, options) => {
+User.beforeSave(async (user, options) => {
   const hash = await bcrypt.hash(user.password, 8)
   user.password = hash
 })

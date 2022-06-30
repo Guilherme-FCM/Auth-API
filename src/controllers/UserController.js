@@ -29,7 +29,16 @@ const UserController = {
         return response.json({ user, token })
     },
 
-    async update(){},
+    async update(request, response){
+        let {firstName, lastName, email} = request.body
+
+        const updatedUser = await User.update(
+            { firstName, lastName, email }, 
+            { where: { userName: request.userName } }
+        );
+
+        return response.json({ success: updatedUser == 1 })
+    },
 
     async remove(request, response){
         const deletedUser = await User.destroy({
