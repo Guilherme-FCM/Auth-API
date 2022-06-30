@@ -11,5 +11,6 @@ routes.route('/users')
     .delete(authMiddleware, UserController.remove)
 
 routes.post('/authenticate', UserController.auth)
+routes.put('/password', authMiddleware, UserController.changePassword)
 
 module.exports = routes

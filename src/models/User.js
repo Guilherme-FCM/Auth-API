@@ -14,12 +14,14 @@ User.init({
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     email: DataTypes.STRING
-  }, { sequelize }
+  }, {
+    hooks: {
+      beforeCreate: async (user, options) => {
+        const hash = await bcrypt.hash(user.password, 8)
+        user.password = hash
+      }
+    }, sequelize
+  }
 )
-
-User.beforeSave(async (user, options) => {
-  const hash = await bcrypt.hash(user.password, 8)
-  user.password = hash
-})
 
 module.exports = User

@@ -43,13 +43,13 @@ const UserController = {
     },
 
     async update(request, response){
-        let {password, firstName, lastName, email} = request.body
+        let {firstName, lastName, email} = request.body
 
         try {
             const updatedUser = await User.update(
-                { password, firstName, lastName, email }, 
+                { firstName, lastName, email }, 
                 { where: { userName: request.userName } }
-            );
+            )
 
             return response.json({ success: updatedUser == 1 })
         } catch (error) {
@@ -60,6 +60,16 @@ const UserController = {
     },
 
     async remove(request, response){
+        const { userName } = request
+        const { password } = request.body
+
+        const user = await User.findOne({ where: { userName } })
+
+        let comparation = await bcrypt.compare(password, user.password)
+        if (! comparation) return response.json({ 
+            error: 'Invalid password.' 
+        }) 
+
         const deletedUser = await User.destroy({
             where: { userName: request.userName }
         })
@@ -89,6 +99,30 @@ const UserController = {
         user.password = undefined
         const token = getToken({ id: user.userName })
         return response.json({ user, token })
+    },
+
+    async changePassword(request, response){
+        const { userName } = request
+        const { oldPassword, newPassword } = request.body
+
+        if (! oldPassword || ! newPassword) 
+        return response.status(400).json({
+            error: 'oldPassword and newPassword are required.'
+        })
+
+        const user = await User.findOne({ where: { userName } })
+
+        let comparation = await bcrypt.compare(oldPassword, user.password)
+        if (! comparation) return response.json({ 
+            error: 'Invalid password.' 
+        }) 
+
+        const hashedPassword = await bcrypt.hash(newPassword, 8)
+        const updatedUser = await User.update(
+            { password: hashedPassword }, 
+            { where: { userName: request.userName } }
+        )
+        return response.json({ success: updatedUser == 1 })
     }
 }
 
