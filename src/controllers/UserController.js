@@ -10,11 +10,26 @@ const getToken = (params = {}) => jwt.sign(
 )
 
 const UserController = {
-    async show(request, response){
+    async index(request, response){
         const users = await User.findAll({
             attributes: { exclude: ['password'] }
         })
         return response.json(users)
+    },
+
+    async show(request, response){
+        const { userName } = request.params
+
+        const user = await User.findOne({
+            where: { userName },
+            attributes: { exclude: ['password'] }
+        })
+
+        if (! user) return response.json({ 
+            error: 'User not found.' 
+        })
+
+        return response.json(user)
     },
 
     async create(request, response){
