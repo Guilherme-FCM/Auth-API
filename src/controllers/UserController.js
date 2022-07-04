@@ -1,11 +1,10 @@
 const User = require('../models/User')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 const authConfig = require('../config/auth') 
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 
 const getToken = (params = {}) => jwt.sign(
-    params, 
-    authConfig.secret, 
+    params, authConfig.secret, 
     { expiresIn: 86400 }
 )
 
@@ -35,10 +34,8 @@ const UserController = {
     async create(request, response){
         let {userName, password, firstName, lastName, email} = request.body
 
-        let existsUserName = await User.findOne({
-            where: { userName }
-        })
-        if (existsUserName) return response.json({
+        const user = await User.findOne({ where: { userName } })
+        if (user) return response.json({
             error: 'User alredy exists.'
         })
 
@@ -101,7 +98,6 @@ const UserController = {
         })
         
         const user = await User.findOne({ where: { userName } })
-
         if (! user) return response.json({ 
             error: 'User not found.' 
         })

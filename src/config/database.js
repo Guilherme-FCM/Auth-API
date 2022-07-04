@@ -4,7 +4,5 @@ module.exports = {
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: 'Auth-API',
-    define: {
-        timestamps: true
-    },
+    define: { timestamps: true }
 }

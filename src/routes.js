@@ -3,7 +3,6 @@ const UserController = require('./controllers/UserController')
 const authMiddleware = require('./middlewares/auth')
 
 const routes = express.Router()
-
 routes.route('/users')
     .get(UserController.index)
     .post(UserController.create)

@@ -1,11 +1,13 @@
 <h1 align="center">{ Auth-API }</h1>
 <p align="center">🔐 Node.js API for users authentication</p>
+
 <p align="center">
- <a href="#about">About</a> |
- <a href="#installations">Installations</a> |
- <a href="#how-to-use">How to Use</a> | 
- <a href="#documentation">Documentation</a> | 
- <a href="#license">License</a>
+    <a href="#about">About</a> |
+    <a href="#installations">Installations</a> |
+    <a href="#how-to-use">How to Use</a> | 
+    <a href="#documentation">Documentation</a> | 
+    <a href="#technologies">Technologies</a> | 
+    <a href="#license">License</a>
 </p>
 
 ## 😁**About**
