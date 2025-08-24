@@ -23,15 +23,8 @@ To use this API, it's require install in your computer:
 
 2. Execute the commands below in project directory to use this API in your computer:
 ~~~bash
-# Install dependencies
-npm install;
-
-# Create database
-npx sequelize db:create;
-npx sequelize db:migrate;
-
-# Run project in development mode
-npm run dev;
+# Run Docker
+docker compose up --build
 
 # Runing in http://localhost:3333/
 ~~~

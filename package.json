@@ -4,7 +4,9 @@
   "description": "Node.js API for user creation and authentication",
   "main": "src/server.js",
   "scripts": {
-    "dev": "nodemon"
+    "start": "nodemon",
+    "db:create": "npx sequelize db:create",
+    "db:migrate": "npx sequelize db:migrate"
   },
   "repository": {
     "type": "git",
