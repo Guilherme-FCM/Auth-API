@@ -89,29 +89,6 @@ const UserController = {
         return response.json({ success: deletedUser === 1 })
     },
 
-    async auth(request, response){
-        const { userName, password } = request.body
-
-        if (! userName || ! password) 
-        return response.status(400).json({
-            error: 'Username and password are required.'
-        })
-        
-        const user = await User.findOne({ where: { userName } })
-        if (! user) return response.json({ 
-            error: 'User not found.' 
-        })
-
-        let comparation = await bcrypt.compare(password, user.password)
-        if (! comparation) return response.json({ 
-            error: 'Invalid password.' 
-        }) 
-        
-        user.password = undefined
-        const token = getToken({ id: user.userName })
-        return response.json({ user, token })
-    },
-
     async changePassword(request, response){
         const { userName } = request
         const { oldPassword, newPassword } = request.body
