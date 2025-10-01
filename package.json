@@ -4,7 +4,7 @@
   "description": "Node.js API for user creation and authentication",
   "main": "src/server.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "nodemon --legacy-watch",
     "db:create": "npx sequelize db:create",
     "db:migrate": "npx sequelize db:migrate"
   },

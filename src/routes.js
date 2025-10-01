@@ -3,6 +3,9 @@ const UserController = require('./controllers/UserController')
 const authMiddleware = require('./middlewares/auth')
 
 const routes = express.Router()
+
+routes.get('/', (req, res) => { res.send('Auth-API') })
+
 routes.route('/users')
     .get(UserController.index)
     .post(UserController.create)
