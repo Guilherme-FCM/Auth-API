@@ -1,12 +1,5 @@
 const User = require('../models/User')
-const authConfig = require('../config/auth') 
-const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
-
-const getToken = (params = {}) => jwt.sign(
-    params, authConfig.secret, 
-    { expiresIn: 86400 }
-)
 
 const UserController = {
     async index(request, response){
@@ -45,8 +38,7 @@ const UserController = {
             })
 
             user.password = undefined
-            const token = getToken({ id: user.userName })
-            return response.json({ user, token })
+            return response.json({ user })
         } catch (error) {
             return response.status(400).json({
                 error: `Column ${error.parent.column} is required.`
